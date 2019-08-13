@@ -1,0 +1,24 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <PackageIconUrl>https://i.imgur.com/seECwvY.png</PackageIconUrl>
+    <PackageProjectUrl>https://github.com/thiagobarradas/aspnet-serilog</PackageProjectUrl>
+    <PackageTags>aspnet, serilog, splunk, seq, autolog, logger, web, api, mvc, console, api, core, standard</PackageTags>
+    <Company>Thiago Barradas</Company>
+    <Authors>Thiago Barradas</Authors>
+    <PackageLicenseUrl>https://github.com/thiagobarradas/aspnet-serilog/blob/master/LICENSE</PackageLicenseUrl>
+    <RepositoryUrl>https://github.com/thiagobarradas/aspnet-serilog</RepositoryUrl>
+    <Description>Serilog logger for AspNet web applications. Handler request, response and exceptions.</Description>
+    <Copyright>Ⓒ Thiago Barradas</Copyright>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.2.0" />
+    <PackageReference Include="PackUtils" Version="1.0.39" />
+    <PackageReference Include="Serilog" Version="2.8.0" />
+    <PackageReference Include="Serilog.Extensions.Logging" Version="2.0.4" />
+  </ItemGroup>
+
+</Project>
