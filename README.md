@@ -9,10 +9,9 @@ Serilog logger for AspNet Core web applications. Handler request, response and e
 
 # Sample
 
-Configure service in statup
+Configure your Startup.cs
 
 ```c#
-// Startup.cs
 
 public void ConfigureServices(IServiceCollection services)
 {
