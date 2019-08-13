@@ -10,12 +10,13 @@ Serilog logger for AspNet Core web applications. Handler request, response and e
 # Sample
 
 Configure service in statup
+
 ```c#
 // Startup.cs
 
 public void ConfigureServices(IServiceCollection services)
 {
-	services.AddMvc();
+    services.AddMvc();
 
     var config = new SerilogConfiguration
     {
@@ -30,6 +31,7 @@ public void Configure(IApplicationBuilder app, IHostingEnvironment env)
     app.UseAspNetSerilog();
     app.UseMvc();
 }
+```
 
 Ready! That way all request/response will be sended to serilog.
 
@@ -46,6 +48,12 @@ public IActionResult Home()
 	...
 }
 
+```
+
+For exception log, in your global exception handler, add exception in context items, like:
+
+```
+context.Items.Add("Exception", exception);
 ```
 
 ## Properties 
