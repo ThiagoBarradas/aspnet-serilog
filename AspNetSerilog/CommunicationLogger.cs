@@ -100,9 +100,9 @@ namespace AspNetSerilog
             LogContext.PushProperty("ElapsedMilliseconds", context.GetExecutionTime(this.SerilogConfiguration.TimeElapsedProperty));
             LogContext.PushProperty("RequestKey", context.GetRequestKey(this.SerilogConfiguration.RequestKeyProperty));
 
-            if (context.Items.ContainsKey("LogAdditionalInfo"))
+            if (context.Items.ContainsKey(LogAdditionalInfo.LogAdditionalInfoItemKey))
             {
-                var additionalInfo = (LogAdditionalInfo) context.Items["LogAdditionalInfo"];
+                var additionalInfo = (LogAdditionalInfo) context.Items[LogAdditionalInfo.LogAdditionalInfoItemKey];
 
                 if (additionalInfo?.Data != null)
                 {
