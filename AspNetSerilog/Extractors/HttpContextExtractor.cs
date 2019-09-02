@@ -143,26 +143,6 @@ namespace AspNetSerilog.Extractors
         }
 
         /// <summary>
-        /// Get request key from AccountId Header
-        /// </summary>
-        /// <param name="context"></param>
-        /// <returns></returns>
-        public static string GetAccountId(this HttpContext context, string accountIdProperty)
-        {
-            if (string.IsNullOrWhiteSpace(accountIdProperty))
-            {
-                return null;
-            }
-
-            if (context?.Response?.Headers?.ContainsKey(accountIdProperty) == true)
-            {
-                return context.Response.Headers[accountIdProperty];
-            }
-
-            return null;
-        }
-
-        /// <summary>
         /// Get ip (X-Forwarded-For or original)
         /// </summary>
         /// <param name="context"></param>

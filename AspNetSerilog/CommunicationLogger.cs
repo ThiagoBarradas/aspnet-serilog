@@ -99,7 +99,19 @@ namespace AspNetSerilog
             LogContext.PushProperty("ResponseHeaders", context.GetResponseHeaders());
             LogContext.PushProperty("ElapsedMilliseconds", context.GetExecutionTime(this.SerilogConfiguration.TimeElapsedProperty));
             LogContext.PushProperty("RequestKey", context.GetRequestKey(this.SerilogConfiguration.RequestKeyProperty));
-            LogContext.PushProperty("AccountId", context.GetAccountId(this.SerilogConfiguration.AccountIdProperty));
+
+            if (context.Items.ContainsKey("LogAdditionalInfo"))
+            {
+                var additionalInfo = (LogAdditionalInfo) context.Items["LogAdditionalInfo"];
+
+                if (additionalInfo?.Data != null)
+                {
+                    foreach (var item in additionalInfo.Data)
+                    {
+                        LogContext.PushProperty(item.Key, item.Value);
+                    }
+                }
+            }
 
             if (exception != null || statusCode >= 500)
             {
