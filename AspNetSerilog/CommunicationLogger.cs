@@ -99,6 +99,7 @@ namespace AspNetSerilog
             LogContext.PushProperty("ResponseHeaders", context.GetResponseHeaders());
             LogContext.PushProperty("ElapsedMilliseconds", context.GetExecutionTime(this.SerilogConfiguration.TimeElapsedProperty));
             LogContext.PushProperty("RequestKey", context.GetRequestKey(this.SerilogConfiguration.RequestKeyProperty));
+            LogContext.PushProperty("Environment", Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT"));
 
             if (context.Items.ContainsKey(LogAdditionalInfo.LogAdditionalInfoItemKey))
             {
