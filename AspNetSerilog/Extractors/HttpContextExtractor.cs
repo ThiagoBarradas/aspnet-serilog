@@ -186,6 +186,12 @@ namespace AspNetSerilog.Extractors
                 return null;
             }
 
+            try
+            {
+                context.Request.Body.Position = 0;
+            }
+            catch (Exception) { }
+             
             string body = null;
             using (StreamReader reader = new StreamReader(context.Request.Body))
             {
