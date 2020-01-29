@@ -25,7 +25,7 @@ namespace AspNetSerilog.Extensions
         /// Exception will be logged
         /// </summary>
         /// <param name="controller"></param>
-        public static void DisableLogging(this Controller controller)
+        public static void DisableLogging(this ControllerBase controller)
         {
             controller?.HttpContext?.Items?.Add(ITEM_NAME, true);
         }
