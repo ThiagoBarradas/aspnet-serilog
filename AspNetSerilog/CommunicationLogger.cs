@@ -97,6 +97,7 @@ namespace AspNetSerilog
             LogContext.PushProperty("ContentType", context.Response.ContentType);
             LogContext.PushProperty("ContentLength", context.GetResponseLength());
             LogContext.PushProperty("ResponseHeaders", context.GetResponseHeaders());
+            LogContext.PushProperty("Version", context.GetExecutionTime(this.SerilogConfiguration.Version));
             LogContext.PushProperty("ElapsedMilliseconds", context.GetExecutionTime(this.SerilogConfiguration.TimeElapsedProperty));
             LogContext.PushProperty("RequestKey", context.GetRequestKey(this.SerilogConfiguration.RequestKeyProperty));
             LogContext.PushProperty("Environment", Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT"));

@@ -17,6 +17,8 @@ namespace AspNetSerilog
 
         public string TimeElapsedProperty { get; set; }
 
+        public string Version { get; set; }
+
         public IEnumerable<string> IgnoredRoutes { get; set; }
 
         public ILogger Logger { get; set; }
