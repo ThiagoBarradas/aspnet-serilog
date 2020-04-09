@@ -52,7 +52,8 @@ namespace AspNetSerilog
         /// <param name="context"></param>
         public void LogData(HttpContext context)
         {
-            var routeDisabled = (this.SerilogConfiguration.IgnoredRoutes?.ToList().Where(r => context.Request.Path.ToString().StartsWith(r)).Any() == true);
+            var routeDisabled = (this.SerilogConfiguration.IgnoredRoutes?.ToList()
+                .Where(r => context.Request.Path.ToString().StartsWith(r)).Any() == true);
 
             if ((context?.Items == null || context.Items.TryGetValue(DisableLoggingExtension.ITEM_NAME, out object disableSerilog) == false)
                 && routeDisabled == false)
@@ -75,6 +76,12 @@ namespace AspNetSerilog
 
             var statusCode = context.GetStatusCode(exception);
 
+            object controller = "Unknow";
+            context.Items.TryGetValue("Controller", out controller);
+
+            object action = "Unknow";
+            context.Items.TryGetValue("Action", out action);
+
             LogContext.PushProperty("RequestBody", context.GetRequestBody(this.SerilogConfiguration.Blacklist));
             LogContext.PushProperty("Method", context.Request.Method);
             LogContext.PushProperty("Path", context.Request.Path);
@@ -91,6 +98,8 @@ namespace AspNetSerilog
             LogContext.PushProperty("StatusDescription", ((HttpStatusCode)statusCode).ToString());
             LogContext.PushProperty("StatusCodeFamily", context.GetStatusCodeFamily(exception));
             LogContext.PushProperty("ProtocolVersion", context.Request.Protocol);
+            LogContext.PushProperty("Controller", controller?.ToString());
+            LogContext.PushProperty("Operation", action?.ToString());
             LogContext.PushProperty("ErrorException", exception);
             LogContext.PushProperty("ErrorMessage", exception?.Message);
             LogContext.PushProperty("ResponseContent", context.GetResponseContent());

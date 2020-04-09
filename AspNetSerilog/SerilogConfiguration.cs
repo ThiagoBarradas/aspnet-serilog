@@ -19,7 +19,7 @@ namespace AspNetSerilog
 
         public string Version { get; set; }
 
-        public IEnumerable<string> IgnoredRoutes { get; set; }
+        public List<string> IgnoredRoutes { get; set; }
 
         public ILogger Logger { get; set; }
     }
