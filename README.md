@@ -1,7 +1,8 @@
-[![Build status](https://ci.appveyor.com/api/projects/status/kk6x66pwp6x4u0y0/branch/master?svg=true)](https://ci.appveyor.com/project/ThiagoBarradas/aspnet-serilog/branch/master)
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/1370d7b2cca34f3e90d07257707f657b)](https://www.codacy.com/app/ThiagoBarradas/aspnet-serilog?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=ThiagoBarradas/aspnet-serilog&amp;utm_campaign=Badge_Grade)
+[![Build Status](https://barradas.visualstudio.com/Contributions/_apis/build/status/NugetPackage/AspNetSerilog?branchName=master)](https://barradas.visualstudio.com/Contributions/_build/latest?definitionId=13&branchName=master)
 [![NuGet Downloads](https://img.shields.io/nuget/dt/AspNetSerilog.svg)](https://www.nuget.org/packages/AspNetSerilog/)
 [![NuGet Version](https://img.shields.io/nuget/v/AspNetSerilog.svg)](https://www.nuget.org/packages/AspNetSerilog/)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=ThiagoBarradas_aspnet-serilog&metric=alert_status)](https://sonarcloud.io/dashboard?id=ThiagoBarradas_aspnet-serilog)
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=ThiagoBarradas_aspnet-serilog&metric=coverage)](https://sonarcloud.io/dashboard?id=ThiagoBarradas_aspnet-serilog)
 
 # AspNetSerilog
 
