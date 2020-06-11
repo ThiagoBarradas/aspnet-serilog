@@ -108,7 +108,7 @@ namespace AspNetSerilog
             LogContext.PushProperty("StatusCodeFamily", context.GetStatusCodeFamily(exception));
             LogContext.PushProperty("ProtocolVersion", context.Request.Protocol);
             LogContext.PushProperty("Controller", controller?.ToString());
-            LogContext.PushProperty("Operation", action?.ToString());
+            LogContext.PushProperty("Operation", action?.ToString()); 
             LogContext.PushProperty("ErrorException", exceptionStackTrace);
             LogContext.PushProperty("ErrorMessage", exceptionMessage);
             LogContext.PushProperty("ResponseContent", context.GetResponseContent());
