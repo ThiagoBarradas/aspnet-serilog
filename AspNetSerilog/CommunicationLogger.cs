@@ -82,6 +82,15 @@ namespace AspNetSerilog
             object action = "Unknow";
             context.Items.TryGetValue("Action", out action);
 
+            string exceptionMessage = null;
+            string exceptionStackTrace = null;
+
+            if (exception != null)
+            {
+                exceptionMessage = HandleFieldSize(exception.Message, 256);
+                exceptionStackTrace = HandleFieldSize(exception.StackTrace, 768);
+            }
+
             LogContext.PushProperty("RequestBody", context.GetRequestBody(this.SerilogConfiguration.Blacklist));
             LogContext.PushProperty("Method", context.Request.Method);
             LogContext.PushProperty("Path", context.Request.Path);
@@ -100,8 +109,8 @@ namespace AspNetSerilog
             LogContext.PushProperty("ProtocolVersion", context.Request.Protocol);
             LogContext.PushProperty("Controller", controller?.ToString());
             LogContext.PushProperty("Operation", action?.ToString());
-            LogContext.PushProperty("ErrorException", exception);
-            LogContext.PushProperty("ErrorMessage", exception?.Message);
+            LogContext.PushProperty("ErrorException", exceptionStackTrace);
+            LogContext.PushProperty("ErrorMessage", exceptionMessage);
             LogContext.PushProperty("ResponseContent", context.GetResponseContent());
             LogContext.PushProperty("ContentType", context.Response.ContentType);
             LogContext.PushProperty("ContentLength", context.GetResponseLength());
@@ -147,6 +156,34 @@ namespace AspNetSerilog
 
             this.SerilogConfiguration.Logger =
                 configuration?.Logger ?? Log.Logger;
+        }
+
+        /// <summary>
+        /// Handle field size
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="maxSize"></param>
+        /// <param name="required"></param>
+        /// <param name="defaultValue"></param>
+        /// <returns></returns>
+        private static string HandleFieldSize(string value, int maxSize, bool required = false, string defaultValue = "????")
+        {
+            if (string.IsNullOrWhiteSpace(value) && !required)
+            {
+                return null;
+            }
+
+            if (string.IsNullOrWhiteSpace(value))
+            {
+                value = defaultValue;
+            }
+
+            if (value.Length > maxSize)
+            {
+                return value.Substring(0, maxSize);
+            }
+
+            return value;
         }
     }
 }
