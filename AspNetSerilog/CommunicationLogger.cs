@@ -87,8 +87,8 @@ namespace AspNetSerilog
 
             if (exception != null)
             {
-                exceptionMessage = HandleFieldSize(exception.Message, 256);
-                exceptionStackTrace = HandleFieldSize(exception.StackTrace, 768);
+                exceptionMessage = HandleFieldSize(exception.Message, ExceptionMaxLenghtExtension.ErrorMessageLenght);
+                exceptionStackTrace = HandleFieldSize(exception.StackTrace, ExceptionMaxLenghtExtension.ErrorExceptionLenght);
             }
 
             LogContext.PushProperty("RequestBody", context.GetRequestBody(this.SerilogConfiguration.Blacklist));
