@@ -2,11 +2,17 @@
 [![NuGet Downloads](https://img.shields.io/nuget/dt/AspNetSerilog.svg)](https://www.nuget.org/packages/AspNetSerilog/)
 [![NuGet Version](https://img.shields.io/nuget/v/AspNetSerilog.svg)](https://www.nuget.org/packages/AspNetSerilog/)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=ThiagoBarradas_aspnet-serilog&metric=alert_status)](https://sonarcloud.io/dashboard?id=ThiagoBarradas_aspnet-serilog)
-[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=ThiagoBarradas_aspnet-serilog&metric=coverage)](https://sonarcloud.io/dashboard?id=ThiagoBarradas_aspnet-serilog)
+<!--[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=ThiagoBarradas_aspnet-serilog&metric=coverage)](https://sonarcloud.io/dashboard?id=ThiagoBarradas_aspnet-serilog)-->
 
 # AspNetSerilog
 
 Serilog logger for AspNet Core web applications. Handler request, response and exceptions.
+
+## Install via NuGet
+
+```
+PM> Install-Package AspNetSerilog
+```
 
 # Sample
 
@@ -84,11 +90,12 @@ context.Items.Add("Exception", exception);
 
 You can use this propeties with serilog log context to build log messages. `HTTP {Method} {Path} {...}`.
 
-## Install via NuGet
+## Setup global max length for exception properties
 
-```
-PM> Install-Package AspNetSerilog
-```
+Use env var to change default value
+
+- `SERILOG_ERROR_MESSAGE_MAX_LENGTH` default value 256;
+- `SERILOG_ERROR_EXCEPTION_MAX_LENGTH` default value 1024;
 
 ## How can I contribute?
 Please, refer to [CONTRIBUTING](.github/CONTRIBUTING.md)
