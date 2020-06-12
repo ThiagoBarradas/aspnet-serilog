@@ -1,20 +1,30 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28307.757
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30011.22
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNetSerilog", "AspNetSerilog\AspNetSerilog.csproj", "{816905D7-8F1A-4D87-8C82-789DE36467A7}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{56CFE2D3-E6FB-4944-8BCB-139ED0CE455E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "git", "git", "{A6BB6C16-6D93-469B-A271-4DEB95DCDFD8}"
 	ProjectSection(SolutionItems) = preProject
 		.gitattributes = .gitattributes
 		.gitignore = .gitignore
-		appveyor.yml = appveyor.yml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "github", "github", "{052D08B9-FAF3-45A2-A3BE-B9B7ED6AF21A}"
+	ProjectSection(SolutionItems) = preProject
 		.github\CONTRIBUTING.md = .github\CONTRIBUTING.md
 		.github\ISSUE_TEMPLATE.md = .github\ISSUE_TEMPLATE.md
 		LICENSE = LICENSE
 		.github\PULL_REQUEST_TEMPLATE.md = .github\PULL_REQUEST_TEMPLATE.md
 		README.md = README.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "devops", "devops", "{0D6BB471-F3E5-4C97-9B68-CDE8C9A42369}"
+	ProjectSection(SolutionItems) = preProject
+		azure-pipelines.yml = azure-pipelines.yml
 	EndProjectSection
 EndProject
 Global
@@ -30,6 +40,11 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{A6BB6C16-6D93-469B-A271-4DEB95DCDFD8} = {56CFE2D3-E6FB-4944-8BCB-139ED0CE455E}
+		{052D08B9-FAF3-45A2-A3BE-B9B7ED6AF21A} = {56CFE2D3-E6FB-4944-8BCB-139ED0CE455E}
+		{0D6BB471-F3E5-4C97-9B68-CDE8C9A42369} = {56CFE2D3-E6FB-4944-8BCB-139ED0CE455E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {83368CDA-F6C0-4F7C-936A-18E5A37F6D28}

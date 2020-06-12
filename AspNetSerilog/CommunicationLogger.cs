@@ -87,8 +87,8 @@ namespace AspNetSerilog
 
             if (exception != null)
             {
-                exceptionMessage = HandleFieldSize(exception.Message, 256);
-                exceptionStackTrace = HandleFieldSize(exception.StackTrace, 768);
+                exceptionMessage = HandleFieldSize(exception.Message, ExceptionMaxLenghtExtension.ErrorMessageLenght);
+                exceptionStackTrace = HandleFieldSize(exception.StackTrace, ExceptionMaxLenghtExtension.ErrorExceptionLenght);
             }
 
             LogContext.PushProperty("RequestBody", context.GetRequestBody(this.SerilogConfiguration.Blacklist));
@@ -108,7 +108,7 @@ namespace AspNetSerilog
             LogContext.PushProperty("StatusCodeFamily", context.GetStatusCodeFamily(exception));
             LogContext.PushProperty("ProtocolVersion", context.Request.Protocol);
             LogContext.PushProperty("Controller", controller?.ToString());
-            LogContext.PushProperty("Operation", action?.ToString());
+            LogContext.PushProperty("Operation", action?.ToString()); 
             LogContext.PushProperty("ErrorException", exceptionStackTrace);
             LogContext.PushProperty("ErrorMessage", exceptionMessage);
             LogContext.PushProperty("ResponseContent", context.GetResponseContent());
