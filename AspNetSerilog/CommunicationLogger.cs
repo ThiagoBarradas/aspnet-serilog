@@ -91,7 +91,7 @@ namespace AspNetSerilog
                 exceptionStackTrace = HandleFieldSize(exception.StackTrace, ExceptionMaxLenghtExtension.ErrorExceptionLenght);
             }
 
-            LogContext.PushProperty("RequestBody", context.GetRequestBody(this.SerilogConfiguration.Blacklist));
+            LogContext.PushProperty("RequestBody", context.GetRequestBody(this.SerilogConfiguration.BlacklistRequest));
             LogContext.PushProperty("Method", context.Request.Method);
             LogContext.PushProperty("Path", context.Request.Path);
             LogContext.PushProperty("Host", context.GetHost());
