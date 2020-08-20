@@ -111,7 +111,7 @@ namespace AspNetSerilog
             LogContext.PushProperty("Operation", action?.ToString()); 
             LogContext.PushProperty("ErrorException", exceptionStackTrace);
             LogContext.PushProperty("ErrorMessage", exceptionMessage);
-            LogContext.PushProperty("ResponseContent", context.GetResponseContent());
+            LogContext.PushProperty("ResponseContent", context.GetResponseContent(this.SerilogConfiguration.BlacklistResponse));
             LogContext.PushProperty("ContentType", context.Response.ContentType);
             LogContext.PushProperty("ContentLength", context.GetResponseLength());
             LogContext.PushProperty("ResponseHeaders", context.GetResponseHeaders());

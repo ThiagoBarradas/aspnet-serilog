@@ -7,6 +7,8 @@ namespace AspNetSerilog
     {
         public string[] Blacklist { get; set; }
 
+        public string[] BlacklistResponse { get; set; }
+
         public string InformationTitle { get; set; }
 
         public string ErrorTitle { get; set; }
