@@ -302,7 +302,7 @@ namespace AspNetSerilog.Extractors
             if (string.IsNullOrWhiteSpace(body) == false &&
                 context.Response.ContentType.Contains("json") == true)
             {
-                return GetContentAsObjectByContentTypeJson(body, false, blacklist);
+                return GetContentAsObjectByContentTypeJson(body, true, blacklist);
             }
             else
             {

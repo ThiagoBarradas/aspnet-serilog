@@ -5,7 +5,7 @@ namespace AspNetSerilog
 {
     public class SerilogConfiguration
     {
-        public string[] Blacklist { get; set; }
+        public string[] BlacklistRequest { get; set; }
 
         public string[] BlacklistResponse { get; set; }
 
