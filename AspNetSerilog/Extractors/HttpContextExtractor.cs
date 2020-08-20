@@ -279,7 +279,7 @@ namespace AspNetSerilog.Extractors
         /// </summary>
         /// <param name="context"></param>
         /// <returns></returns>
-        public static object GetResponseContent(this HttpContext context)
+        public static object GetResponseContent(this HttpContext context, string[] blacklist)
         {
             if (context?.Response?.Body?.CanRead == false)
             {
@@ -302,7 +302,7 @@ namespace AspNetSerilog.Extractors
             if (string.IsNullOrWhiteSpace(body) == false &&
                 context.Response.ContentType.Contains("json") == true)
             {
-                return GetContentAsObjectByContentTypeJson(body, false, null);
+                return GetContentAsObjectByContentTypeJson(body, false, blacklist);
             }
             else
             {
