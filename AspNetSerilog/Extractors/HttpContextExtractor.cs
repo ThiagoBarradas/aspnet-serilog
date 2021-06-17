@@ -1,11 +1,14 @@
 ﻿using JsonMasking;
 using Microsoft.AspNetCore.Http;
+using Newtonsoft.Json;
 using PackUtils;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Security.Claims;
+using System.Xml.Linq;
+using System.Xml.Serialization;
 
 namespace AspNetSerilog.Extractors
 {
@@ -203,11 +206,16 @@ namespace AspNetSerilog.Extractors
                 : string.Empty;
 
             var isJson = (contentType.Contains("json") == true);
+            var isXml = (contentType.Contains("xml") == true);
             //var isForm = (context.Request?.Form?.Count > 0);
 
             if (isJson)
             {
                 return GetContentAsObjectByContentTypeJson(body, true, blacklist);
+            }
+            else if (isXml)
+            {
+                return GetContentAsObjectByContentTypeXml(body, true, blacklist);
             }
             //else if (isForm)
             //{
@@ -304,6 +312,11 @@ namespace AspNetSerilog.Extractors
             {
                 return GetContentAsObjectByContentTypeJson(body, true, blacklist);
             }
+            else if (string.IsNullOrWhiteSpace(body) == false &&
+                context.Response.ContentType.Contains("xml") == true)
+            {
+                return GetContentAsObjectByContentTypeXml(body, true, blacklist);
+            }
             else
             {
                 return new Dictionary<string, string> { { "raw_content", body } };
@@ -339,6 +352,23 @@ namespace AspNetSerilog.Extractors
             catch (Exception) { }
 
             return content;
+        }
+
+        /// <summary>
+        /// Get content as object by content type
+        /// </summary>
+        /// <param name="content"></param>
+        /// <param name="contentType"></param>
+        internal static object GetContentAsObjectByContentTypeXml(string content, bool maskXml, string[] blacklist)
+        {
+            string xmlConverted = null;
+            using (var reader = new StringReader(content))
+            {
+                XDocument xml = XDocument.Parse(reader.ReadToEnd());
+                xmlConverted = JsonConvert.SerializeXNode(xml);
+            }
+
+            return GetContentAsObjectByContentTypeJson(xmlConverted, maskXml, blacklist);
         }
     }
 }
