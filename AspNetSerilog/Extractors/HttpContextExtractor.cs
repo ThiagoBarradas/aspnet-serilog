@@ -361,13 +361,14 @@ namespace AspNetSerilog.Extractors
         /// <param name="contentType"></param>
         internal static object GetContentAsObjectByContentTypeXml(string content, bool maskXml, string[] blacklist)
         {
+            string xmlConverted = null;
             using (var reader = new StringReader(content))
             {
                 XDocument xml = XDocument.Parse(reader.ReadToEnd());
-                string xmlConverted = JsonConvert.SerializeXNode(xml);
+                xmlConverted = JsonConvert.SerializeXNode(xml);
             }
 
-            return GetContentAsObjectByContentTypeJson(content, maskXml, blacklist);
+            return GetContentAsObjectByContentTypeJson(xmlConverted, maskXml, blacklist);
         }
     }
 }
