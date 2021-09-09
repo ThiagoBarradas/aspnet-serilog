@@ -1,14 +1,13 @@
-﻿using JsonMasking;
+﻿using AspNetSerilog.Extensions;
+using JsonMasking;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
-using PackUtils;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Security.Claims;
 using System.Xml.Linq;
-using System.Xml.Serialization;
 
 namespace AspNetSerilog.Extractors
 {
