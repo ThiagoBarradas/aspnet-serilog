@@ -9,6 +9,10 @@ namespace AspNetSerilog
 
         public string[] BlacklistResponse { get; set; }
 
+        public string[] HeaderBlacklist { get; set; }
+
+        public string[] QueryStringBlacklist { get; set; }
+
         public string InformationTitle { get; set; }
 
         public string ErrorTitle { get; set; }
