@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Security.Claims;
+using System.Web;
 using System.Xml.Linq;
 
 namespace AspNetSerilog.Extractors
@@ -47,7 +48,7 @@ namespace AspNetSerilog.Extractors
         /// </summary>
         /// <param name="context"></param>
         /// <returns></returns>
-        public static IDictionary<string, string> GetQueryString(this HttpContext context)
+        public static IDictionary<string, string> GetQueryString(this HttpContext context, string[] blacklist)
         {
             if (context?.Request?.Query == null)
             {
@@ -57,10 +58,30 @@ namespace AspNetSerilog.Extractors
             var dic = new Dictionary<string, string>();
             foreach (var item in context.Request.Query)
             {
-                dic[item.Key] = item.Value.ToString();
+                var key = item.Key;
+                var value = item.Value.ToString();
+                dic[item.Key] = MaskField(key, value, blacklist);
             }
 
             return dic;
+        }
+
+        public static string GetRawQueryString(this HttpContext context, string[] blacklist)
+        {
+            if (context?.Request?.Query == null)
+            {
+                return string.Empty;
+            }
+
+            var queryString = HttpUtility.ParseQueryString(context.Request.QueryString.ToString());
+            foreach (var qs in queryString.AllKeys)
+            {
+                var key = qs;
+                var value = queryString[qs];
+                queryString[qs] = MaskField(key, value, blacklist);
+            }
+
+            return $"?{queryString}";
         }
 
         /// <summary>
@@ -68,7 +89,7 @@ namespace AspNetSerilog.Extractors
         /// </summary>
         /// <param name="context"></param>
         /// <returns></returns>
-        public static IDictionary<string, string> GetRequestHeaders(this HttpContext context)
+        public static IDictionary<string, string> GetRequestHeaders(this HttpContext context, string[] blacklist)
         {
             if (context?.Request?.Headers == null)
             {
@@ -78,7 +99,9 @@ namespace AspNetSerilog.Extractors
             var dic = new Dictionary<string, string>();
             foreach (var item in context.Request.Headers)
             {
-                dic[item.Key] = item.Value.ToString();
+                var key = item.Key;
+                var value = item.Value.ToString();
+                dic[item.Key] = MaskField(key, value, blacklist);
             }
 
             return dic;
@@ -89,7 +112,7 @@ namespace AspNetSerilog.Extractors
         /// </summary>
         /// <param name="context"></param>
         /// <returns></returns>
-        public static IDictionary<string, string> GetResponseHeaders(this HttpContext context)
+        public static IDictionary<string, string> GetResponseHeaders(this HttpContext context, string[] blacklist)
         {
             if (context?.Response?.Headers == null)
             {
@@ -99,7 +122,9 @@ namespace AspNetSerilog.Extractors
             var dic = new Dictionary<string, string>();
             foreach (var item in context.Response.Headers)
             {
-                dic[item.Key] = item.Value.ToString();
+                var key = item.Key;
+                var value = item.Value.ToString();
+                dic[item.Key] = MaskField(key, value, blacklist);
             }
 
             return dic;
@@ -268,7 +293,7 @@ namespace AspNetSerilog.Extractors
         /// </summary>
         /// <param name="context"></param>
         /// <returns></returns>
-        public static object GetFullUrl(this HttpContext context)
+        public static object GetFullUrl(this HttpContext context, string[] blacklist)
         {
             var absoluteUri = string.Concat(
                        context?.Request?.Scheme,
@@ -276,7 +301,7 @@ namespace AspNetSerilog.Extractors
                        context?.Request?.Host.ToUriComponent(),
                        context?.Request?.PathBase.ToUriComponent(),
                        context?.Request?.Path.ToUriComponent(),
-                       context?.Request?.QueryString.ToUriComponent());
+                       context.GetRawQueryString(blacklist));
 
             return absoluteUri;
         }
@@ -368,6 +393,16 @@ namespace AspNetSerilog.Extractors
             }
 
             return GetContentAsObjectByContentTypeJson(xmlConverted, maskXml, blacklist);
+        }
+
+        internal static string MaskField(string key, string value, string[] blacklist)
+        {
+            if (blacklist?.Any() == true && blacklist.Contains(key))
+            {
+                return "******";
+            }
+
+            return value;
         }
     }
 }

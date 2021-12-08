@@ -6,6 +6,7 @@ using Serilog.Context;
 using System;
 using System.Linq;
 using System.Net;
+using System.Web;
 
 namespace AspNetSerilog
 {
@@ -96,10 +97,10 @@ namespace AspNetSerilog
             LogContext.PushProperty("Path", context.Request.Path);
             LogContext.PushProperty("Host", context.GetHost());
             LogContext.PushProperty("Port", context.GetPort());
-            LogContext.PushProperty("Url", context.GetFullUrl());
-            LogContext.PushProperty("QueryString", context.Request.QueryString);
-            LogContext.PushProperty("Query", context.GetQueryString());
-            LogContext.PushProperty("RequestHeaders", context.GetRequestHeaders());
+            LogContext.PushProperty("Url", context.GetFullUrl(this.SerilogConfiguration.QueryStringBlacklist));
+            LogContext.PushProperty("QueryString", context.GetRawQueryString(this.SerilogConfiguration.QueryStringBlacklist));
+            LogContext.PushProperty("Query", context.GetQueryString(this.SerilogConfiguration.QueryStringBlacklist));
+            LogContext.PushProperty("RequestHeaders", context.GetRequestHeaders(this.SerilogConfiguration.HeaderBlacklist));
             LogContext.PushProperty("Ip", context.GetIp());
             LogContext.PushProperty("User", context.GetUser());
             LogContext.PushProperty("IsSuccessful", statusCode < 400);
@@ -114,7 +115,7 @@ namespace AspNetSerilog
             LogContext.PushProperty("ResponseContent", context.GetResponseContent(this.SerilogConfiguration.BlacklistResponse));
             LogContext.PushProperty("ContentType", context.Response.ContentType);
             LogContext.PushProperty("ContentLength", context.GetResponseLength());
-            LogContext.PushProperty("ResponseHeaders", context.GetResponseHeaders());
+            LogContext.PushProperty("ResponseHeaders", context.GetResponseHeaders(this.SerilogConfiguration.HeaderBlacklist));
             LogContext.PushProperty("Version", this.SerilogConfiguration.Version);
             LogContext.PushProperty("ElapsedMilliseconds", context.GetExecutionTime(this.SerilogConfiguration.TimeElapsedProperty));
             LogContext.PushProperty("RequestKey", context.GetRequestKey(this.SerilogConfiguration.RequestKeyProperty));
