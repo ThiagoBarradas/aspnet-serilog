@@ -293,19 +293,53 @@ namespace AspNetSerilog.Extractors
         /// </summary>
         /// <param name="context"></param>
         /// <returns></returns>
-        public static object GetFullUrl(this HttpContext context, string[] blacklist)
+        public static object GetFullUrl(this HttpContext context, string[] queryBlacklist, string[] httpContextBlackList)
         {
             var absoluteUri = string.Concat(
                        context?.Request?.Scheme,
                        "://",
                        context?.Request?.Host.ToUriComponent(),
-                       context?.Request?.PathBase.ToUriComponent(),
-                       context?.Request?.Path.ToUriComponent(),
-                       context.GetRawQueryString(blacklist));
+                       context?.GetPathBase(httpContextBlackList),
+                       context?.GetPath(httpContextBlackList),
+                       context.GetRawQueryString(queryBlacklist));
 
             return absoluteUri;
         }
 
+        /// <summary>
+        /// Get Path
+        /// </summary>
+        /// <param name="context"></param>
+        /// <returns></returns>
+        public static object GetPath(this HttpContext context, string[] blacklist)
+        {
+            
+            if (blacklist?.Any() == true && blacklist.Contains("Path"))
+            {
+                return @"/******";
+            }
+
+            return context.Request.Path.ToUriComponent();
+            
+        }
+        
+        /// <summary>
+        /// Get PathBase
+        /// </summary>
+        /// <param name="context"></param>
+        /// <returns></returns>
+        public static object GetPathBase(this HttpContext context, string[] blacklist)
+        {
+            
+            if (blacklist?.Any() == true && blacklist.Contains("PathBase"))
+            {
+                return @"/******";
+            }
+
+            return context.Request.PathBase.ToUriComponent();
+            
+        }
+        
         /// <summary>
         /// Get response content
         /// </summary>
