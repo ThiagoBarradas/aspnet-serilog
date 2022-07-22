@@ -12,6 +12,8 @@ namespace AspNetSerilog
         public string[] HeaderBlacklist { get; set; }
 
         public string[] QueryStringBlacklist { get; set; }
+        
+        public string[] HttpContextBlacklist { get; set; }
 
         public string InformationTitle { get; set; }
 

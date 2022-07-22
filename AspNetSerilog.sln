@@ -27,6 +27,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "devops", "devops", "{0D6BB4
 		azure-pipelines.yml = azure-pipelines.yml
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNetSerilogTests", "AspNetSerilogTests\AspNetSerilogTests.csproj", "{9374A8D1-F652-4C32-9266-E7EDE2CA7B56}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -37,6 +39,10 @@ Global
 		{816905D7-8F1A-4D87-8C82-789DE36467A7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{816905D7-8F1A-4D87-8C82-789DE36467A7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{816905D7-8F1A-4D87-8C82-789DE36467A7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9374A8D1-F652-4C32-9266-E7EDE2CA7B56}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9374A8D1-F652-4C32-9266-E7EDE2CA7B56}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9374A8D1-F652-4C32-9266-E7EDE2CA7B56}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9374A8D1-F652-4C32-9266-E7EDE2CA7B56}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -94,10 +94,10 @@ namespace AspNetSerilog
 
             LogContext.PushProperty("RequestBody", context.GetRequestBody(this.SerilogConfiguration.BlacklistRequest));
             LogContext.PushProperty("Method", context.Request.Method);
-            LogContext.PushProperty("Path", context.Request.Path);
+            LogContext.PushProperty("Path", context.GetPath(this.SerilogConfiguration.HttpContextBlacklist));
             LogContext.PushProperty("Host", context.GetHost());
             LogContext.PushProperty("Port", context.GetPort());
-            LogContext.PushProperty("Url", context.GetFullUrl(this.SerilogConfiguration.QueryStringBlacklist));
+            LogContext.PushProperty("Url", context.GetFullUrl(this.SerilogConfiguration.QueryStringBlacklist, this.SerilogConfiguration.HttpContextBlacklist));
             LogContext.PushProperty("QueryString", context.GetRawQueryString(this.SerilogConfiguration.QueryStringBlacklist));
             LogContext.PushProperty("Query", context.GetQueryString(this.SerilogConfiguration.QueryStringBlacklist));
             LogContext.PushProperty("RequestHeaders", context.GetRequestHeaders(this.SerilogConfiguration.HeaderBlacklist));
