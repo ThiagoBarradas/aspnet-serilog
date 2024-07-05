@@ -206,7 +206,7 @@ namespace AspNetSerilog.Extractors
         /// </summary>
         /// <param name="context"></param>
         /// <returns></returns>
-        public static object GetRequestBody(this HttpContext context, string[] blacklist)
+        public static object GetRequestBody(this HttpContext context, string[] blacklist, Dictionary<string, Func<string, string>> blacklistPartial = null)
         {
             if (context?.Request?.Body == null)
             {
@@ -235,11 +235,11 @@ namespace AspNetSerilog.Extractors
 
             if (isJson)
             {
-                return GetContentAsObjectByContentTypeJson(body, true, blacklist);
+                return GetContentAsObjectByContentTypeJson(body, true, blacklist, blacklistPartial);
             }
             else if (isXml)
             {
-                return GetContentAsObjectByContentTypeXml(body, true, blacklist);
+                return GetContentAsObjectByContentTypeXml(body, true, blacklist, blacklistPartial);
             }
             //else if (isForm)
             //{
@@ -345,7 +345,7 @@ namespace AspNetSerilog.Extractors
         /// </summary>
         /// <param name="context"></param>
         /// <returns></returns>
-        public static object GetResponseContent(this HttpContext context, string[] blacklist)
+        public static object GetResponseContent(this HttpContext context, string[] blacklist, Dictionary<string, Func<string, string>> blacklistPartial = null)
         {
             if (context?.Response?.Body?.CanRead == false)
             {
@@ -368,12 +368,12 @@ namespace AspNetSerilog.Extractors
             if (string.IsNullOrWhiteSpace(body) == false &&
                 context.Response.ContentType.Contains("json") == true)
             {
-                return GetContentAsObjectByContentTypeJson(body, true, blacklist);
+                return GetContentAsObjectByContentTypeJson(body, true, blacklist, blacklistPartial);
             }
             else if (string.IsNullOrWhiteSpace(body) == false &&
                 context.Response.ContentType.Contains("xml") == true)
             {
-                return GetContentAsObjectByContentTypeXml(body, true, blacklist);
+                return GetContentAsObjectByContentTypeXml(body, true, blacklist, blacklistPartial);
             }
             else
             {
@@ -396,12 +396,17 @@ namespace AspNetSerilog.Extractors
         /// </summary>
         /// <param name="content"></param>
         /// <param name="contentType"></param>
-        internal static object GetContentAsObjectByContentTypeJson(string content, bool maskJson, string[] backlist)
+        internal static object GetContentAsObjectByContentTypeJson(
+            string content, 
+            bool maskJson, 
+            string[] backlist,
+            Dictionary<string, Func<string, string>> blacklistPartial = null)
         {
             try
             {
                 if (maskJson == true && backlist?.Any() == true)
                 {
+                    //content = content.MaskFields(backlist, "******", blacklistPartial); // TODO: Modificar após subir a nova versão estavel do JsonMasking e atualizar
                     content = content.MaskFields(backlist, "******");
                 }
 
@@ -417,7 +422,11 @@ namespace AspNetSerilog.Extractors
         /// </summary>
         /// <param name="content"></param>
         /// <param name="contentType"></param>
-        internal static object GetContentAsObjectByContentTypeXml(string content, bool maskXml, string[] blacklist)
+        internal static object GetContentAsObjectByContentTypeXml(
+            string content, 
+            bool maskXml, 
+            string[] blacklist,
+            Dictionary<string, Func<string, string>> blacklistPartial = null)
         {
             string xmlConverted = null;
             using (var reader = new StringReader(content))
@@ -426,7 +435,7 @@ namespace AspNetSerilog.Extractors
                 xmlConverted = JsonConvert.SerializeXNode(xml);
             }
 
-            return GetContentAsObjectByContentTypeJson(xmlConverted, maskXml, blacklist);
+            return GetContentAsObjectByContentTypeJson(xmlConverted, maskXml, blacklist, blacklistPartial);
         }
 
         internal static string MaskField(string key, string value, string[] blacklist)
