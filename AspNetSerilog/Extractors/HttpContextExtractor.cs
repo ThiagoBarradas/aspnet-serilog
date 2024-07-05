@@ -406,8 +406,7 @@ namespace AspNetSerilog.Extractors
             {
                 if (maskJson == true && backlist?.Any() == true)
                 {
-                    //content = content.MaskFields(backlist, "******", blacklistPartial); // TODO: Modificar após subir a nova versão estavel do JsonMasking e atualizar
-                    content = content.MaskFields(backlist, "******");
+                    content = content.MaskFields(backlist, "******", blacklistPartial);
                 }
 
                 return content.DeserializeAsObject();
