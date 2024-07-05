@@ -10,7 +10,7 @@ namespace AspNetSerilogTests.Extractors
 {
     public class HttpContextExtractorTest
     {
-        private readonly HttpContext _httpContext;
+        private HttpContext _httpContext;
 
         public HttpContextExtractorTest()
         {
@@ -20,115 +20,136 @@ namespace AspNetSerilogTests.Extractors
         [Fact]
         public void GetPath_InformingThePathInTheBlackList_ReturnsMaskedPath()
         {
+            // Arrange
             _httpContext.Request.Method = "GET";
             _httpContext.Request.Path = new PathString("/foo/bar");
 
-            var blackList = new[] {"Path"};
-
+            var blackList = new[] { "Path" };
             var expected = "/******";
+
+            // Act
             var actual = HttpContextExtractor.GetPath(_httpContext, blackList);
 
+            // Assert
             Assert.Equal(expected, actual);
         }
 
         [Fact]
         public void GetPath_NotInformingThePathInTheBlackList_ReturnsTheValueGivenInThePath()
         {
+            // Arrange
             _httpContext.Request.Method = "GET";
             _httpContext.Request.Path = new PathString("/foo/bar");
 
             var blackList = new string[] { };
-
             var expected = "/foo/bar";
+
+            // Act
             var actual = HttpContextExtractor.GetPath(_httpContext, blackList);
 
+            // Assert
             Assert.Equal(expected, actual);
         }
 
         [Fact]
         public void GetPathBase_InformingThePathBaseInTheBlackList_ReturnsMaskedPath()
         {
+            // Arrange
             _httpContext.Request.Method = "GET";
             _httpContext.Request.Path = new PathString("/foo/bar");
             _httpContext.Request.PathBase = new PathString("/sample-alias/");
 
-            var blackList = new[] {"PathBase"};
-
+            var blackList = new[] { "PathBase" };
             var expected = "/******";
+
+            //Act
             var actual = HttpContextExtractor.GetPathBase(_httpContext, blackList);
 
+            // Assert
             Assert.Equal(expected, actual);
         }
 
         [Fact]
         public void GetPathBase_NotInformingThePathBaseInTheBlackList_ReturnsTheValueGivenInThePathBase()
         {
+            // Arrange
             _httpContext.Request.Method = "GET";
             _httpContext.Request.Path = new PathString("/foo/bar");
             _httpContext.Request.PathBase = new PathString("/sample-alias/");
 
             var blackList = new string[] { };
-
             var expected = "/sample-alias/";
+
+            // Act
             var actual = HttpContextExtractor.GetPathBase(_httpContext, blackList);
 
+            // Assert
             Assert.Equal(expected, actual);
         }
 
         [Fact]
         public void GetFullUrl_InformingThePathInTheBlackList_ReturnsMaskedPath()
         {
+            // Arrange
             _httpContext.Request.Method = "GET";
             _httpContext.Request.Scheme = "http";
             _httpContext.Request.Host = new HostString("localhost:80");
             _httpContext.Request.PathBase = new PathString("/sample-alias");
             _httpContext.Request.Path = new PathString("/foo/bar");
 
-            string[] queryBlackList = {};
-            var httpContextBlackList = new[] {"Path"};
+            string[] queryBlackList = { };
+            var httpContextBlackList = new[] { "Path" };
 
             var expected = "http://localhost:80/sample-alias/******?";
-            
+
+            // Act
             var actual = HttpContextExtractor.GetFullUrl(_httpContext, queryBlackList, httpContextBlackList);
 
+            // Assert
             Assert.Equal(expected, actual);
         }
-        
+
         [Fact]
         public void GetFullUrl_InformingThePathBaseInTheBlackList_ReturnsMaskedPath()
         {
+            // Arrange
             _httpContext.Request.Method = "GET";
             _httpContext.Request.Scheme = "http";
             _httpContext.Request.Host = new HostString("localhost:80");
             _httpContext.Request.PathBase = new PathString("/sample-alias");
             _httpContext.Request.Path = new PathString("/foo/bar");
 
-            string[] queryBlackList = {};
-            var httpContextBlackList = new[] {"PathBase"};
+            string[] queryBlackList = { };
+            var httpContextBlackList = new[] { "PathBase" };
 
             var expected = "http://localhost:80/******/foo/bar?";
-            
+
+            // Act
             var actual = HttpContextExtractor.GetFullUrl(_httpContext, queryBlackList, httpContextBlackList);
 
+            // Assert
             Assert.Equal(expected, actual);
         }
-        
+
         [Fact]
         public void GetFullUrl_InformingThePathAndPathBaseInTheBlackList_ReturnsMaskedPath()
         {
+            //Arrange
             _httpContext.Request.Method = "GET";
             _httpContext.Request.Scheme = "http";
             _httpContext.Request.Host = new HostString("localhost:80");
             _httpContext.Request.PathBase = new PathString("/sample-alias");
             _httpContext.Request.Path = new PathString("/foo/bar");
 
-            string[] queryBlackList = {};
-            var httpContextBlackList = new[] {"PathBase", "Path"};
+            string[] queryBlackList = { };
+            var httpContextBlackList = new[] { "PathBase", "Path" };
 
             var expected = "http://localhost:80/******/******?";
-            
+
+            // Act
             var actual = HttpContextExtractor.GetFullUrl(_httpContext, queryBlackList, httpContextBlackList);
 
+            // Assert
             Assert.Equal(expected, actual);
         }
 
@@ -228,10 +249,10 @@ namespace AspNetSerilogTests.Extractors
             string[] queryBlackList = { "*card.number", "*password" };
 
             // Act
-            var valueUnmodified = _httpContext.GetRequestBody(queryBlackList, blacklistPartialWithInvalidFuncMock);
+            var value = _httpContext.GetRequestBody(queryBlackList, blacklistPartialWithInvalidFuncMock);
 
             // assert
-            Assert.Equal(EXPECTED_VALUE, valueUnmodified);
+            Assert.Equal(EXPECTED_VALUE, value);
         }
     }
 }
