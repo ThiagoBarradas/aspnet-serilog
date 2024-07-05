@@ -184,7 +184,10 @@ stages:
       condition: eq(variables['execute_test'], 'true')
       inputs:
         artifact: UnitTestResults
-    - task: SonarCloudPrepare@1
+    - script: |
+        sudo apt-get install unzip
+      displayName: Install sonarqube dependency package
+    - task: SonarCloudPrepare@2
       displayName: Start Sonarqube Analysis
       inputs:
         SonarCloud: '$(sonarcloud_account)'
@@ -192,6 +195,8 @@ stages:
         scannerMode: 'MSBuild'
         projectKey: '$(sonarcloud_project)'
         projectName: '$(sdk_project_name)'
+        cliProjectKey: '$(sonarcloud_project)'
+        cliProjectName: '$(sdk_project_name)'
         extraProperties: |
           sonar.sourceEncoding=UTF-8
           sonar.scm.forceReloadAll=true
@@ -200,9 +205,9 @@ stages:
     - script: |
         dotnet build "$(solution_path)"
       displayName: Runnig Build For Analysis
-    - task: SonarCloudAnalyze@1
+    - task: SonarCloudAnalyze@2
       displayName: Finish Sonarqube Analysis
-    - task: SonarCloudPublish@1
+    - task: SonarCloudPublish@2
       displayName: Publish Sonarqube Analysis
       inputs:
         pollingTimeoutSec: '300'
