@@ -254,5 +254,38 @@ namespace AspNetSerilogTests.Extractors
             // assert
             Assert.Equal(EXPECTED_VALUE, value);
         }
+
+        [Fact]
+        public void GetContentAsObjectByContentTypeJson_WithInvalidFunctionInDictionaryOfPartialBlacklist_ShouldHandleExceptionIfTryCatchExistsInTheFunction()
+        {
+            // Arrange
+            const string EXPECTED_VALUE = "{\"Test\":\"1\",\"Card\":{\"Number\":\"***HandlingException***\",\"Password\":\"******\",\"Email\":\"email@test.com\",\"Card\":{\"Number\":\"***HandlingException***\",\"Password\":\"******\"},\"Teste\":{\"Card\":{\"Number\":\"***HandlingException***\",\"Password\":\"******\",\"Email\":\"email@test.com\"}}}}";
+            const int INDEX_OUT_OF_RANGE = 100;
+
+            var blacklistPartialWithInvalidFuncMock = new Dictionary<string, Func<string, string>>(StringComparer.OrdinalIgnoreCase)
+            {
+                {
+                    "*card.number", value =>
+                    {
+                        try
+                        {
+                            return value[INDEX_OUT_OF_RANGE..];
+                        }
+                        catch (Exception)
+                        {
+                            return "***HandlingException***";
+                        }                  
+                    }
+                }
+            };
+
+            string[] queryBlackList = { "*card.number", "*password" };
+
+            // Act
+            var value = _httpContext.GetRequestBody(queryBlackList, blacklistPartialWithInvalidFuncMock);
+
+            // assert
+            Assert.Equal(EXPECTED_VALUE, JsonConvert.SerializeObject(value));
+        }
     }
 }
