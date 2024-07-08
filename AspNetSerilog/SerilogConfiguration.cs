@@ -1,4 +1,5 @@
 ﻿using Serilog;
+using System;
 using System.Collections.Generic;
 
 namespace AspNetSerilog
@@ -7,7 +8,11 @@ namespace AspNetSerilog
     {
         public string[] BlacklistRequest { get; set; }
 
+        public Dictionary<string, Func<string, string>> BlacklistRequestPartial { get; set; }
+
         public string[] BlacklistResponse { get; set; }
+
+        public Dictionary<string, Func<string, string>> BlacklistResponsePartial { get; set; }
 
         public string[] HeaderBlacklist { get; set; }
 
