@@ -92,7 +92,7 @@ namespace AspNetSerilog
                 exceptionStackTrace = HandleFieldSize(exception.StackTrace, ExceptionMaxLenghtExtension.ErrorExceptionLenght);
             }
 
-            LogContext.PushProperty("RequestBody", context.GetRequestBody(this.SerilogConfiguration.BlacklistRequest));
+            LogContext.PushProperty("RequestBody", context.GetRequestBody(this.SerilogConfiguration.BlacklistRequest, this.SerilogConfiguration.BlacklistRequestPartial));
             LogContext.PushProperty("Method", context.Request.Method);
             LogContext.PushProperty("Path", context.GetPath(this.SerilogConfiguration.HttpContextBlacklist));
             LogContext.PushProperty("Host", context.GetHost());
@@ -112,7 +112,7 @@ namespace AspNetSerilog
             LogContext.PushProperty("Operation", action?.ToString()); 
             LogContext.PushProperty("ErrorException", exceptionStackTrace);
             LogContext.PushProperty("ErrorMessage", exceptionMessage);
-            LogContext.PushProperty("ResponseContent", context.GetResponseContent(this.SerilogConfiguration.BlacklistResponse));
+            LogContext.PushProperty("ResponseContent", context.GetResponseContent(this.SerilogConfiguration.BlacklistResponse, this.SerilogConfiguration.BlacklistResponsePartial));
             LogContext.PushProperty("ContentType", context.Response.ContentType);
             LogContext.PushProperty("ContentLength", context.GetResponseLength());
             LogContext.PushProperty("ResponseHeaders", context.GetResponseHeaders(this.SerilogConfiguration.HeaderBlacklist));
