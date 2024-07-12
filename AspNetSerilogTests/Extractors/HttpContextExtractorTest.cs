@@ -287,5 +287,26 @@ namespace AspNetSerilogTests.Extractors
             // assert
             Assert.Equal(EXPECTED_VALUE, JsonConvert.SerializeObject(value));
         }
+
+        [Fact]
+        public void GetContentAsObjectByContentTypeJson_WithNullDelegatesInPartialBlacklist_ReturnBodyWithTotalMask()
+        {
+            // Arrange
+            const string EXPECTED_VALUE = "{\"Test\":\"1\",\"Card\":{\"Number\":\"******\",\"Password\":\"******\",\"Email\":\"email@test.com\",\"Card\":{\"Number\":\"******\",\"Password\":\"******\"},\"Teste\":{\"Card\":{\"Number\":\"******\",\"Password\":\"******\",\"Email\":\"email@test.com\"}}}}";
+
+            var blacklistPartialWithInvalidFuncMock = new Dictionary<string, Func<string, string>>(StringComparer.OrdinalIgnoreCase)
+            {
+                { "*card.number", null },
+                { "*password", null }
+            };
+
+            string[] queryBlackList = { "*card.number", "*password" };
+
+            // Act
+            var value = _httpContext.GetRequestBody(queryBlackList, blacklistPartialWithInvalidFuncMock);
+
+            // assert
+            Assert.Equal(EXPECTED_VALUE, JsonConvert.SerializeObject(value));
+        }
     }
 }
